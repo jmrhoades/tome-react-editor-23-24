@@ -37,7 +37,7 @@ export const Image = ({ children, tile, parent }) => {
 	const left = useMotionValue(0);
 	const width = useMotionValue(0);
 	const height = useMotionValue(0);
-	const backgroundColor = useMotionValue(0);
+	const backgroundColor = useMotionValue(tile.background.value);
 	tileMotionValues.current[tile.id] = {
 		x: x,
 		y: y,

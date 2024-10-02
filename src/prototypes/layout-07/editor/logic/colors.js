@@ -193,6 +193,11 @@ export const isDarkUITheme = color => {
 };
 
 export const getContrastAwareStroke = (backgroundColor, foregroundColor) => {
+
+	console.log("getContrastAwareStroke", backgroundColor, foregroundColor);
+
+	if (!foregroundColor) return "transparent";
+
 	const isBgLightMode = chroma(backgroundColor).luminance() > 0.5;
 	const threshold = isBgLightMode ? 1.4 : 1.8;
 	const contrast = chroma.contrast(foregroundColor, backgroundColor);

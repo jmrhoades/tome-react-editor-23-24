@@ -27,6 +27,11 @@ export const Background = props => {
 	const labelValue = colorHex ? colorHex : "None";
 	const active = colorPanel && colorPanel.type === Panels.BACKGROUND.type;
 
+	let bgColor = "#ffffff";
+	if (tile.background.type === backgrounds.COLOR) bgColor = tile.background.value;
+	const [backgroundColor, setBackgroundColor] = React.useState(bgColor);
+	const updateBackgroundColor = v => { console.log("set bg color"); setBackgroundColor(v); };
+
 	return (
 		<>
 			<Section>
@@ -35,7 +40,7 @@ export const Background = props => {
 					onPointerDownCapture={e => {
 						// toggleColorPanel(Panels.BACKGROUND, e.target, Anchor["left-end"]);
 						//console.log(panel)
-						toggleColorPanel(Panels.BACKGROUND, document.getElementById("properties-panel"), Anchor["left-end"]);
+						toggleColorPanel(Panels.BACKGROUND, document.getElementById("properties-panel"), Anchor["left-end"], backgroundColor, updateBackgroundColor, "background-color-button");
 						e.stopPropagation();
 					}}
 					style={{
@@ -43,7 +48,7 @@ export const Background = props => {
 						"--background-color-hover": active ? "var(--t4)" : "var(--t3)",
 					}}
 				>
-					{motionColor && <CurrentColor motionValue={motionColor} />}
+					{motionColor && <CurrentColor motionValue={motionColor} value={motionColor.get()} />}
 					{!motionColor && <Icon name="CircleDashedOutline" size={16} />}
 
 					{labelValue}

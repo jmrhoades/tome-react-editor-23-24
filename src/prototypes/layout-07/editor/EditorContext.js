@@ -29,6 +29,7 @@ import {
 	//getNoOpDropRects,
 } from "./logic/drop-rects";
 import { generateAutoTextColors, generateCanvasColor, isDarkUITheme } from "./logic/colors";
+import { rearrangeSiblings } from "./logic/rearrange";
 
 // import { Huds } from "./huds/Huds";
 
@@ -1811,6 +1812,7 @@ export const EditorProvider = ({ children }) => {
 		return targets.filter(o => o.droppableId === tile.parentId || isIdDescendantOfId(o.droppableId, tile.parentId));
 	};
 
+	/*
 	const rearrangeSiblings = () => {
 		const { tile, parent } = pointerInfo.current;
 
@@ -1867,6 +1869,7 @@ export const EditorProvider = ({ children }) => {
 			saveState();
 		}
 	};
+	*/
 
 	const onTileDrag = e => {
 		const { dx, dy, tile, tileRect, parent, parentRect, draggableTiles, lingerTargets, hoverTargets } =
@@ -1897,205 +1900,10 @@ export const EditorProvider = ({ children }) => {
 		// Remove linger drop zones
 
 		if (dropStatus.current.operation === DropOperation.rearrange) {
-			rearrangeSiblings();
+			rearrangeSiblings(pointerInfo, tileRects, saveState);
 		}
-
-		// pointerHoverTimer.current = setTimeout(() => {
-		// 	if (dropStatus.current.lingerId) {
-		// 		console.log("START LINGER!!!");
-		// 		pointerInfo.current.lingerTargets = [];
-		// 		dropStatus.current.lingerKey.set(dropStatus.current.lingerId)
-		// 	}
-		// }, LINGER_DURATION);
-
-		/*
-		const inParent = pointInRect(point.x, point.y, parentRect);
-
-		if (inParent) {
-			rearrangeSiblings();
-		} else {
-		}
-		*/
-
-		//console.log("inParent", inParent);
-
-		/* 
-
-		// Clear the "linger" hover timer
-		clearTimeout(pointerHoverTimer.current);
 
 		
-
-		const hoverTile = findTileIntersection({ tiles: hoverTargets, tileRects: tileRects, point: point });
-		if (hoverTile) {
-			hoveringOverTile.set(hoverTile.id);
-		} else {
-			hoveringOverTile.set(false);
-		}
-		
-		const overTile = findTileIntersection({ tiles: lingerTargets, tileRects: tileRects, point: point });
-		console.log(overTile);
-
-		if (overTile) {
-			if (overTile.id !== lingeringOverTile.get()) {
-				lingeringTimerStarted.set(overTile.id);
-				clearTimeout(pointerHoverTimer.current);
-				pointerHoverTimer.current = setTimeout(() => {
-					// Trigger the linger state
-					lingeringOverTile.set(overTile.id);
-
-					console.log("LINGER!!!");
-				}, LINGER_DURATION);
-			}
-		} else {
-			lingeringTimerStarted.set(false);
-			lingeringOverTile.set(false);
-			clearTimeout(pointerHoverTimer.current);
-		}
-
-
-		*/
-
-		/*		
-		// Reset status on every pointer move
-		cancelDropStatus();
-
-		const collisionRect = {
-			top: draggingRect.top + pointerInfo.current.dy,
-			y: draggingRect.top + pointerInfo.current.dy,
-			x: draggingRect.left + pointerInfo.current.dx,
-			left: draggingRect.left + pointerInfo.current.dx,
-			width: draggingRect.width,
-			height: draggingRect.height,
-			bottom: draggingRect.top + draggingRect.height + pointerInfo.current.dy,
-			right: draggingRect.left + draggingRect.width + pointerInfo.current.dx,
-			midX: draggingRect.left + pointerInfo.current.dx + draggingRect.width / 2,
-			midY: draggingRect.top + pointerInfo.current.dy + draggingRect.height / 2,
-		};
-
-		const pointerCoordinates = {
-			x: e.clientX,
-			y: e.clientY + window.scrollY,
-		};
-
-		if (lingeringOverTile.get() && pointerInfo.current.lingeredRect) {
-			//if (pointerLingering(pointerCoordinates, pointerInfo.current.lingeredRect)) {
-			//if (rectLingering(collisionRect, pointerInfo.current.lingeredRect)) {
-
-			// has pointer moved more than lingeredRect width or height?
-			let lingerDX = Math.abs(e.clientX - pointerInfo.current.lingerStartX);
-			let lingerDY = Math.abs(e.clientY - pointerInfo.current.lingerStartY);
-			let withinToleranceX = pointerInfo.current.lingeredRect.width;
-			let withinToleranceY = pointerInfo.current.lingeredRect.height;
-			if (lingerDX < withinToleranceX && lingerDY < withinToleranceY) {
-				//console.log("lingeringOverTile", pointerInfo.current.closestWithin);
-
-				// Find closest create container drop zone
-				const closestLingerRects = closestCenter({
-					collisionRect: collisionRect,
-					droppableRects: pointerInfo.current.lingerRectMap,
-					droppableContainers: pointerInfo.current.lingerDropTargets,
-					pointerCoordinates: pointerCoordinates,
-				});
-				if (closestLingerRects && closestLingerRects.length > 0) {
-					let closest = closestLingerRects[0];
-					setDropStatus({
-						id: closest.data.droppableContainer.id,
-						draggableId: closest.data.droppableContainer.draggableId,
-						droppableId: closest.data.droppableContainer.droppableId,
-						operation: closest.data.droppableContainer.operation,
-						direction: closest.data.droppableContainer.direction,
-						axis: closest.data.droppableContainer.axis,
-						order: closest.data.droppableContainer.order,
-					});
-				}
-			} else {
-				lingeringOverTile.set(false);
-				onTileDrag(e);
-			}
-		} else {
-			// First check if out of page via pointer coordinates
-			const outOfPage = checkIfOutOfPage(collisionRect);
-			const withinParent = checkIfWithinParent(collisionRect);
-
-			let targets = dropTargets;
-
-			// Filter drop targets based on within parent or not
-			// This prioritizes drop zones within the current parent
-			if (withinParent) targets = filterDropTargetsWithinParent(targets);
-
-			if (!outOfPage) {
-				// Filter drop targets based on x & y
-				// if moving in a positive x direction, only check rects that are to the right of the dragging rect
-				//targets = filterDropTargetsWithPositionDelta(targets, collisionRect);
-				//targets = filterDropTargetsByPointerDirection(targets, pointerCoordinates);
-
-				// Find valid hit rects
-				if (rectIdMap && targets) {
-					//const closestRects = pointerWithin({
-					//const closestRects = closestCorners({
-					const closestRects = closestCenter({
-						collisionRect: collisionRect,
-						droppableRects: rectIdMap,
-						droppableContainers: targets,
-						pointerCoordinates: pointerCoordinates,
-					});
-					//console.log(closestRects);
-
-					// Don't hit check unless you've moved 1/4 (max 64) of your size
-					//const MIN_DIST_X = Math.min(draggingRect.width / 4, 64);
-					//const MIN_DIST_Y = Math.min(draggingRect.height / 4, 64);
-					//const distanceMovedCheck = Math.abs(dx) > MIN_DIST_X || Math.abs(dy) > MIN_DIST_Y;
-
-					if (closestRects && closestRects.length > 0) {
-						let closest = closestRects[0];
-						setDropStatus({
-							id: closest.data.droppableContainer.id,
-							draggableId: closest.data.droppableContainer.draggableId,
-							droppableId: closest.data.droppableContainer.droppableId,
-							operation: closest.data.droppableContainer.operation,
-							direction: closest.data.droppableContainer.direction,
-							axis: closest.data.droppableContainer.axis,
-							order: closest.data.droppableContainer.order,
-						});
-
-						// Don't trigger linger if you're already on a create-container drop zones
-						if (closest.data.droppableContainer.operation !== DropOperation.lingerCreate) {
-							// Start a new timer to open up the create drop zones
-							// aka "Linger to create a container"
-							pointerHoverTimer.current = setTimeout(() => {
-								// Save the rect to see when to break out of linger mode
-								const rect = pointerInfo.current.tileRectIdMap.get(closest.data.droppableContainer.droppableId);
-
-								// Cache linger info
-								pointerInfo.current.lingerRectMap = new Map();
-								pointerInfo.current.lingerDropTargets = [];
-								pointerInfo.current.lingeredRect = rect;
-								pointerInfo.current.closestWithin = closest;
-								pointerInfo.current.lingerStartX = e.clientX;
-								pointerInfo.current.lingerStartY = e.clientY;
-
-								// Create the linger drop zones
-								getLingerHitRects({
-									tile: findTileById(closest.data.droppableContainer.droppableId),
-									tileRect: rect,
-									rectIdMap: pointerInfo.current.lingerRectMap,
-									dropTargets: pointerInfo.current.lingerDropTargets,
-								});
-
-								// Trigger the linger state
-								lingeringOverTile.set(true);
-
-								// Re-process the mouse event under the new linger state
-								onTileDrag(e);
-							}, LINGER_DURATION);
-						}
-					}
-				}
-			}
-		}
-
-		*/
 	};
 
 	const onAddTileDrag = (e, info) => {
