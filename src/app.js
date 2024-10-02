@@ -2,6 +2,7 @@ import React from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 
 import { Index02 } from "./prototypes/index-02";
+
 import { Prompt10 } from "./prototypes/prompt-10";
 import { Drawing01 } from "./prototypes/drawing-01";
 import { Drawing02 } from "./prototypes/drawing-02";

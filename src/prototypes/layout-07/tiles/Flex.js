@@ -98,69 +98,15 @@ export const Flex = ({ children, tile, parent }) => {
 		}
 	}, [tomeData, tile]);
 
-	/*
-	Wrapping detection
-		If the container has a horizontal direction, wrapping is on
-		Filling via align-self: stretch conflicts with align-content: start
-		This means alignment is dodgy in wrapping containers
-		If wrapping is detected, align-content can be safely applied
-		Detect wrapping by looking at the offsetTop of the first & last child of the container
-		If they're different there's wrapping yo
-	*/
-
-	/*
-	const checkIfWrappingCSS = () => {
-		// reset when checking
-		ref.current.style.setProperty("align-content", "unset");
-		if (tile.layout.direction === contentDirection.HORIZONTAL) {
-			if (tile.tiles.length > 1) {
-				const firstChild = tile.tiles[0];
-				const firstChildRef = tileRefs.current[firstChild.id];
-				const lastChild = tile.tiles[tile.tiles.length - 1];
-				const lastChildRef = tileRefs.current[lastChild.id];
-				if (firstChildRef.current && lastChildRef.current) {
-					const firstOffsetTop = firstChildRef.current.offsetTop;
-					const lastOffsetTop = lastChildRef.current.offsetTop;
-					if (lastOffsetTop - firstOffsetTop > 0) {
-						//console.log("Wrapping horizontal container");
-						// if (!isWrapping) setIsWrapping(true);
-						let alignContent = "start";
-						if (tile.layout.alignY === contentAlign.START) alignContent = "start";
-						if (tile.layout.alignY === contentAlign.CENTER) alignContent = "center";
-						if (tile.layout.alignY === contentAlign.END) alignContent = "end";
-						ref.current.style.setProperty("align-content", alignContent);
-					}
-				}
-			}
-		}
-	};
-	*/
-
 	const layoutCSS = getLayoutCSS({ tile, parent });
 
 	// Initialize the container's css vars
 	React.useEffect(() => {
-		//ref.current.style.setProperty(`--width-${tile.id}`, grid.width);
-		//ref.current.style.setProperty(`--height-${tile.id}`, grid.height);
-		//ref.current.style.setProperty(`--justify-self-${tile.id}`, grid.justifySelf);
-
-		// ref.current.style.setProperty(`--flex-basis-${tile.id})`, layoutCSS.flexBasis);
-		// ref.current.style.setProperty(`--flex-grow-${tile.id})`, layoutCSS.flexGrow);
-		// ref.current.style.setProperty(`--flex-shrink-${tile.id}`, layoutCSS.flexShrink);
-
-		// console.log(layoutCSS.flexBasis, layoutCSS.flexGrow, layoutCSS.flexShrink)
-
-		// Background color
-		// A css variable AND a motion value?!
-		//if (!isRootContainer) {
-			let bgColor = "transparent";
-			if (tile.background.type === backgrounds.COLOR) bgColor = tile.background.value;
-			ref.current.style.setProperty(`--background-color-${tile.id}`, bgColor);
-			backgroundColor.set(bgColor);
-		//} else {
-			//backgroundColor.set(currentPage.theme.tokens["--page-color"]);
-		//}
-		
+		// Background color: use css variable AND a motion value
+		let bgColor = "transparent";
+		if (tile.background.type === backgrounds.COLOR) bgColor = tile.background.value;
+		ref.current.style.setProperty(`--background-color-${tile.id}`, bgColor);
+		backgroundColor.set(bgColor);
 	}, [tomeData, tile]);
 
 	let backgroundImage = undefined;
@@ -180,16 +126,6 @@ export const Flex = ({ children, tile, parent }) => {
 			initial={false}
 			transition={dragging || ancestorDragging ? transitions.instant : transitions.layoutTransition}
 			onLayoutMeasure={e => onLayoutMeasure(tile, e)}
-			// Could be used to good effect when adding tiles
-			// initial={{
-			// 	scale: 0,
-			// 	opacity: 0,
-			// }}
-			// animate={{
-			// 	scale: 1,
-			// 	opacity: 1,
-			// }}
-
 			style={{
 				x: x,
 				y: y,
@@ -198,21 +134,6 @@ export const Flex = ({ children, tile, parent }) => {
 				opacity: opacity,
 
 				...layoutCSS,
-
-				/*
-				Container size
-				*/
-				//flexBasis: `var(--flex-basis-${tile.id})`,
-				//flexGrow: `var(--flex-grow-${tile.id})`,
-				//flexShrink: `var(--flex-shrink-${tile.id})`,
-
-				/*
-				// Container size
-				
-				minWidth: "min-content",
-				height: `var(--height-${tile.id})`,
-				minHeight: "min-content",
-				*/
 
 				// Content padding & gap amount
 				paddingLeft: `calc(calc(${tile.layout.padding.left}px * var(--content-scale)) * var(--page-scale))`,
@@ -227,12 +148,6 @@ export const Flex = ({ children, tile, parent }) => {
 
 				// Background color
 				backgroundColor: `var(--background-color-${tile.id})`,
-				
-				//aspectRatio: isRootContainer && isFullscreen ? "16 / 9" : "unset",
-
-				//backgroundColor: `var(--background-color-${tile.id})`,
-				//outline: isRootContainer ? "2px solid var(--t3)" : "unset",
-				//outlineOffset: "-1px",
 
 				// Background image
 				backgroundImage: backgroundImage,
@@ -248,20 +163,7 @@ export const Flex = ({ children, tile, parent }) => {
 const FlexBox = styled(motion.section)`
 	transform-style: preserve-3d;
 	position: relative;
-
 	background-position: center;
 	background-repeat: no-repeat;
-	background-size: cover;
-
 	pointer-events: none;
-
-	//transition: all 0.1s ease-out;
-
-	// Cannot do this on the parent el!
-	// messes with translate z stuff
-	/* overflow-x: clip; */
-	/* overflow-y: clip; */
-
-	//grid-template-columns: var(--grid-template-columns);
-	//grid-template-rows: var(--grid-template-rows);
 `;

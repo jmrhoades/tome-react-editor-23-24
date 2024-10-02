@@ -7,8 +7,13 @@ node_modules
 /build
 
 # assets and whatnot
-/public
+/public/images
+/public/logos
+/public/icons
+/public/daversa
+/public/central-icon-system
 
 # misc
 .DS_Store
 .env
+package-lock.json

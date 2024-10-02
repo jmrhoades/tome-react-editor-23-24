@@ -184,7 +184,7 @@ export const TileText = props => {
 				$caretcolor={caretColor}
 				$selectioncolor={selectionColor}
 				contentEditable={true}
-				spellcheck="false"
+				spellCheck="false"
 				suppressContentEditableWarning={true}
 				//layout
 				//transition={transitions.layoutTransition}

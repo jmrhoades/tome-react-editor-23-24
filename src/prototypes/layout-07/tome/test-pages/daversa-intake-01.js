@@ -38,7 +38,7 @@ export const makePage = tome => {
 	container.layout.direction = contentDirection.HORIZONTAL;
 	container.layout.distribute = contentDistribute.SPACE_BETWEEN;
 	container.layout.alignY = contentAlign.START;
-	container.layout.height.type = containerSize.FILL;
+	container.layout.height.type = containerSize.HUG;
 
 	text = makeTextData(container);
 	text.content.textStyle = TextStyles.Title;
@@ -57,7 +57,7 @@ export const makePage = tome => {
 	container.layout.direction = contentDirection.HORIZONTAL;
 	container.layout.distribute = contentDistribute.SPACE_BETWEEN;
 	container.layout.height.type = containerSize.FILL;
-	//container.layout.alignY = contentAlign.CENTER;
+	container.layout.alignY = contentAlign.CENTER;
 
 	text = makeTextData(container);
 	text.content.textStyle = TextStyles.Body2;

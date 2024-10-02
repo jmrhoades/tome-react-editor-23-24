@@ -49,11 +49,11 @@ export const makeTestTome = () => {
 	page = daversaIntake1(tome);
 	page = daversaLogoWall1(tome);
 
-	page = stych01(tome);
+	//page = stych01(tome);
 	page = stych02(tome);
 	page = stych03(tome);
-	page = stych04(tome);
-	page = stych05(tome);
+	//page = stych04(tome);
+	//page = stych05(tome);
 
 	page = ramp01(tome);
 	page = ramp02(tome);

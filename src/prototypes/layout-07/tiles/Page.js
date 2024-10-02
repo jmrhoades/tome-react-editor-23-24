@@ -65,21 +65,15 @@ export const Page = ({ children, tile }) => {
 				"--page-auto-center": tile.layout.centered ? "auto" : undefined,
 				"--page-accent-color": tile.theme.tokens["--accent-color"],
 
-				//borderRadius: tomeData.editor.isFullscreen ? "unset" : `calc(calc(${tile.layout.borderRadius}px * var(--content-scale)) * var(--page-scale))`,
 
-				//borderRadius: tomeData.editor.isFullscreen ? "unset" : `${tile.layout.borderRadius}px`,
+				
 				borderRadius: tomeData.editor.isFullscreen ? "unset" : `10px`,
-
-				backgroundColor: `var(--page-color)`,
-				// boxShadow: "var(--page-shadow)",
-
-				//"--page-width": tile.layout.contentSize.width + "px",
+				backgroundColor: `var(--page-color)`,				
 			}}
 		>
 			{/* <MotionConfig reducedMotion={reduceMotion}> */}
 			<LayoutGroup initial={false}>{children}</LayoutGroup>
 			{/* </MotionConfig> */}
-			{/* <BottomPadding /> */}
 		</PageBox>
 	);
 };
@@ -88,21 +82,10 @@ export const PageBox = styled.div`
 	transform-style: preserve-3d;
 
 	font-size: var(--font-size);
-
 	margin: var(--page-auto-center);
-	/* margin-right: var(--page-auto-center); */
-
 	width: var(--page-width);
 	min-height: var(--page-min-height);
-	//max-height: var(--page-max-height);
 	height: var(--page-max-height);
-
-	// aspect-ratio: 16 / 9;
-
-	//overflow-y: var(--page-overflow-y);
-	/* overflow-y: scroll; */
-	/* overflow-x: clip; */
-	/* margin-bottom: var(--page-margin-bottom); */
 
 	display: flex;
 	justify-content: center;

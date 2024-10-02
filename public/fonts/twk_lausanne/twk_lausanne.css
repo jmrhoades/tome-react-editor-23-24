@@ -1,0 +1,20 @@
+@font-face {
+    font-family: TWKLausanne;
+    font-weight: 400;
+    font-display: swap;
+    src: url("TWKLausanne-400.woff2") format("woff2");
+  }
+  @font-face {
+    font-family: TWKLausanne;
+    font-weight: 500;
+    font-display: swap;
+    src: url("TWKLausanne-500.woff2") format("woff2");
+  }
+  
+  @font-face {
+    font-family: TWKLausanne;
+    font-weight: 550;
+    font-display: swap;
+    src: url("TWKLausanne-550.woff2") format("woff2");
+  }
+  

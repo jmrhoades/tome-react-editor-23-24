@@ -25,7 +25,7 @@ export const makePage = tome => {
 	
 
 	flex = makeFlexData(flexRoot);
-	//flex.layout.height = containerSize.HUG;
+	flex.layout.height = containerSize.HUG;
 	flex.layout.padding.left = 16;
 	flex.layout.padding.right = 16;
 	flex.layout.padding.top = 12;
