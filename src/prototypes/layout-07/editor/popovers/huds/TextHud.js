@@ -17,6 +17,13 @@ export const TextHud = props => {
 	const { hidePanel } = React.useContext(PopoverContext);
 	const { tile } = props;
 
+	const { text, textStyle } = tile.content;
+
+
+	//const fontSize = tile.content.fontSize ? tile.content.fontSize + "px" : textStyle.fontSize;
+	//console.log("fontSize", fontSize);
+
+
 	return (
 		<>
 			{/* <HudButton
@@ -41,10 +48,15 @@ export const TextHud = props => {
 			/>
 
 			<HudDivider />
+
 			<HudButton
 				type={hudButtonTypes.NUMBER_INPUT}
 				setInputFocused={setInputFocused}
-				value={20}
+				submit={v => {
+					tile.content.fontSize = v;
+					saveState();
+				}}
+				value={tile.content.fontSize}
 				onTap={e => {
 					e.stopPropagation();
 				}}

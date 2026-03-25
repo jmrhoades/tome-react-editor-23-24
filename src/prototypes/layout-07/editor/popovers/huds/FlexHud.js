@@ -76,7 +76,6 @@ export const FlexHud = props => {
 	let bgColor = "#ffffff";
 	if (tile.background.type === backgrounds.COLOR) bgColor = tile.background.value;
 	const [backgroundColor, setBackgroundColor] = React.useState(bgColor);
-
 	const updateBackgroundColor = v => { console.log("set bg color"); setBackgroundColor(v); };
 
 	/*

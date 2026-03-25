@@ -37,7 +37,7 @@ export const Image = ({ children, tile, parent }) => {
 	const left = useMotionValue(0);
 	const width = useMotionValue(0);
 	const height = useMotionValue(0);
-	const backgroundColor = useMotionValue(tile.background.value);
+	const backgroundColor = useMotionValue(0);
 	tileMotionValues.current[tile.id] = {
 		x: x,
 		y: y,
@@ -109,9 +109,6 @@ export const Image = ({ children, tile, parent }) => {
 		if (tile.background.type === backgrounds.COLOR) bgColor = tile.background.value;
 		ref.current.style.setProperty(`--background-color-${tile.id}`, bgColor);
 		backgroundColor.set(bgColor);
-
-		//ref.current.style.setProperty(`--width-${tile.id}`, wrapStyles.width);
-		//ref.current.style.setProperty(`--height-${tile.id}`, wrapStyles.height);
 	}, [tomeData, tile]);
 
 	React.useLayoutEffect(() => {

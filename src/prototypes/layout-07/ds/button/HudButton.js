@@ -155,8 +155,9 @@ export const HudButton = props => {
 			{type === hudButtonTypes.NUMBER_INPUT && (
 				<Field
 					hud={true}
-					value={20}
+					value={props.value}
 					setInputFocused={setInputFocused}
+					submit={props.submit}
 					style={{
 						textAlign: "center",
 						height: "26px",

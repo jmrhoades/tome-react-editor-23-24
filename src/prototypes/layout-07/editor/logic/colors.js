@@ -194,7 +194,7 @@ export const isDarkUITheme = color => {
 
 export const getContrastAwareStroke = (backgroundColor, foregroundColor) => {
 
-	console.log("getContrastAwareStroke", backgroundColor, foregroundColor);
+	// console.log("getContrastAwareStroke", backgroundColor, foregroundColor);
 
 	if (!foregroundColor) return "transparent";
 

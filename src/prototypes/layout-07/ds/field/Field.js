@@ -133,7 +133,7 @@ export const Field = props => {
 							numV = rounded ? parseInt(v) : parseFloat(v);
 						}
 						setInputValue(numV);
-						//submit(numV);
+						submit(numV);
 						console.log(numV);
 					}
 

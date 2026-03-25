@@ -45,8 +45,6 @@ export const makePage = tome => {
 	col = makeFlexData(flexRoot);
 	col.layout.direction = contentDirection.VERTICAL;
 	col.layout.width.type = containerSize.FILL;
-	//col.layout.width.type = containerSize.CUSTOM;
-	//col.layout.width.value = 385;
 	col.layout.height.type = containerSize.FILL;
 	col.layout.distribute = contentDistribute.SPACE_BETWEEN;
 
@@ -58,6 +56,7 @@ export const makePage = tome => {
 	text = makeTextData(header);
 	text.content.textStyle = TextStyles.Title;
 	text.content.text = "Case study";
+	text.content.fontSize = 32;
 
 	text = makeTextData(header);
 	text.content.textStyle = TextStyles.Title;

@@ -37,6 +37,7 @@ import { pageBackground } from "../tome/TileData";
 import { ColorPanel } from "./selection/ColorPanel";
 
 export const Editor = props => {
+	
 	const { tomeData, findTilesByKeyValue, getCurrentPage } = React.useContext(TomeContext);
 	const { dragSelection, isMobileView, isPlayMode, event, setPageBackgroundColor } = React.useContext(EditorContext);
 	const { panel, menu, flyoutMenu, colorPanel } = React.useContext(PopoverContext);

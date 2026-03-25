@@ -17,7 +17,7 @@ export const Background = props => {
 	const { toggleColorPanel, panel, colorPanel } = React.useContext(PopoverContext);
 
 	const { tile } = props;
-
+ 
 	const motionColor =
 		tile.background.type === backgrounds.COLOR
 			? tileMotionValues.current[tile.id].backgroundColor
